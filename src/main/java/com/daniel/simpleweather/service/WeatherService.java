@@ -1,5 +1,8 @@
 package com.daniel.simpleweather.service;
 
+import com.daniel.simpleweather.dto.WeatherDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +22,7 @@ public class WeatherService {
     @Value("${api.key}")
     private String apiKey;
 
-    public String checkWeather(String lon, String lat){
+    public WeatherDTO checkWeather(String lon, String lat) throws JsonProcessingException {
 
         Map<String, String> params = new HashMap<>();
         params.put("lon", lon);
@@ -29,8 +32,11 @@ public class WeatherService {
         ResponseEntity<String> entity = restTemplate.getForEntity(apiUrl + "?lon={lon}&lat={lat}&appid={appid}",
                                 String.class, params);
 
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        return entity.getBody();
+        WeatherDTO weatherDTO = objectMapper.readValue(entity.getBody(), WeatherDTO.class);
+
+        return weatherDTO;
     }
 
 }

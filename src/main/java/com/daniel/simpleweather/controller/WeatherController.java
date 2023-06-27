@@ -1,6 +1,8 @@
 package com.daniel.simpleweather.controller;
 
+import com.daniel.simpleweather.dto.WeatherDTO;
 import com.daniel.simpleweather.service.WeatherService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,7 @@ public class WeatherController {
     private final WeatherService weatherService;
 
     @GetMapping
-    public String getWeather(@RequestParam String lon, @RequestParam String lat){
+    public WeatherDTO getWeather(@RequestParam String lon, @RequestParam String lat) throws JsonProcessingException {
         return weatherService.checkWeather(lon, lat);
     }
 }
